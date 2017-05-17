@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<properties>
+		<property name="name">kineticskunk</property>
+		<property name="pattern">%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</property>
+
+
+		<!-- %d{yyyy-MM-dd HH:mm:ss.SSS} | %-5.5p | %-10.10t | %-20.70C:%-5.5L 
+			| %msg%n -->
+	</properties>
+	<appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="${pattern}" />
+		</Console>
+		<RollingFile name="RollingFile" fileName="logs/${name}.log"
+			filePattern="logs/$${date:yyyy-MM}/${name}-%d{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout>
+				<pattern>${pattern}</pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy /><!-- Rotated everyday -->
+				<SizeBasedTriggeringPolicy size="100 MB" /> <!-- Or every 100 MB -->
+			</Policies>
+		</RollingFile>
+	</appenders>
+	<loggers>
+		<root level="debug"> <!-- We log everything -->
+			<appender-ref ref="Console" /> <!-- To console -->
+			<appender-ref ref="RollingFile" /> <!-- And to a rotated file -->
+		</root>
+		<root level="fatal"> <!-- We log everything -->
+			<appender-ref ref="Console" /> <!-- To console -->
+			<appender-ref ref="RollingFile" /> <!-- And to a rotated file -->
+		</root>
+		<root level="error"> <!-- We log everything -->
+			<appender-ref ref="Console" /> <!-- To console -->
+			<appender-ref ref="RollingFile" /> <!-- And to a rotated file -->
+		</root>
+		<root level="info"> <!-- We log everything -->
+			<appender-ref ref="Console" /> <!-- To console -->
+			<appender-ref ref="RollingFile" /> <!-- And to a rotated file -->
+		</root>
+		<root level="trace"> <!-- We log everything -->
+			<appender-ref ref="Console" /> <!-- To console -->
+			<appender-ref ref="RollingFile" /> <!-- And to a rotated file -->
+		</root>
+	</loggers>
+</configuration>

@@ -19,10 +19,38 @@
 		<selenium.version>2.53.0</selenium.version>
 		<appium.version>2.2.0</appium.version>
 		<testng.version>6.9.10</testng.version>
-		<converter.version>0.0.1-SNAPSHOT</converter.version>
 		<jsch.version>0.1.38</jsch.version>
 		<mongo.java.version>3.2.2</mongo.java.version>
+		<github.global.server>github</github.global.server>
+		<github.repo.name>maven-dependencies</github.repo.name>
+		<mvn.repo.branch>mvn-repo</mvn.repo.branch>
 	</properties>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>yodaqua</id>
+			<url>https:/github.com/kineticskunk/maven-dependencies/${mvn.repo.branch}/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>internal.repo</id>
+			<name>Temporary Staging Repository</name>
+			<url>file://${project.build.directory}/${mvn.repo.branch}</url>
+		</repository>
+	</distributionManagement>
+
+	<scm>
+		<url>https://github.com/kineticskunk/maven-dependencies.git</url>
+		<connection>scm:git:git@github.com:kineticskunk/maven-dependencies.git</connection>
+		<developerConnection>scm:git:git@github.com:kineticskunk/maven-dependencies.git</developerConnection>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>yodaqua</id>
+			<name>Donovan Mulder</name>
+			<email>donovan.mulder@kineticskunk.com</email>
+		</developer>
+	</developers>
 
 	<dependencyManagement>
 		<dependencies>
@@ -44,6 +72,40 @@
 			</resource>
 		</resources>
 		<plugins>
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.12</version>
+				<configuration>
+					<!-- git commit message -->
+					<message>Maven artifacts for ${project.version}</message>
+					<!-- disable webpage processing -->
+					<noJekyll>true</noJekyll>
+					<!-- matches distribution management repository url above -->
+					<outputDirectory>${project.build.directory}/${mvn.repo.branch}</outputDirectory>
+					<!-- remote branch name -->
+					<branch>refs/heads/mvn-repo</branch>
+					<!-- If you remove this then the old artifact will be removed and new 
+						one will replace. But with the merge tag you can just release by changing 
+						the version -->
+					<merge>true</merge>
+					<includes>
+						<include>**/*</include>
+					</includes>
+					<!-- github repo name -->
+					<repositoryName>${github.repo.name}</repositoryName>
+					<!-- github username -->
+					<repositoryOwner>kineticskunk</repositoryOwner>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>deploy</phase>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -147,14 +209,6 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<configuration>
-					<downloadSources>true</downloadSources>
-					<downloadJavadocs>true</downloadJavadocs>
 				</configuration>
 			</plugin>
 			<plugin>

@@ -1,12 +1,9 @@
 package com.kineticskunk.utilities;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -18,7 +15,6 @@ import org.apache.logging.log4j.Logger;
 public class CommandLineInteractor {
 
 	private static Logger logger;
-	private ShellScriptExecutor sse;
 	
 	private String strShellScriptLocation;
 	private String strCommand;
@@ -27,7 +23,6 @@ public class CommandLineInteractor {
 
 	public CommandLineInteractor () {
 		logger = LogManager.getLogger(CommandLineInteractor.class.getName());
-		sse = new ShellScriptExecutor();
 		
 		strShellScriptLocation = null;
 		strCommand = null;

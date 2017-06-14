@@ -3,6 +3,7 @@ package com.kineticskunk.utilities;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -80,13 +81,11 @@ public class ApplicationProperties {
 	 * @throws IOException
 	 */
 	public void loadPropertiesFile(String configFileName) throws IOException{
-		InputStream inputStream = ap.getResourceInputStream(configFileName);
-		if (inputStream != null) {
-			getProperties().load(inputStream);
-		} else {
-			
+		FileReader fileReader = new FileReader(new File(this.getClass().getClassLoader().getResource(configFileName).getPath()));
+		if (fileReader != null) {
+			getProperties().load(fileReader);
 		}
-		inputStream.close();
+		fileReader.close();
 	}
 	
 	/**

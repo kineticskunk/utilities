@@ -56,7 +56,7 @@ public class ApplicationProperties {
 	 * @return
 	 * @throws FileNotFoundException
 	 */
-	private InputStream getInputStream(String configFileLocation, String configFileName) throws FileNotFoundException {
+	public InputStream getInputStream(String configFileLocation, String configFileName) throws FileNotFoundException {
 		if (!configFileLocation.endsWith(System.getProperty("file.separator"))) {
 			configFileLocation = configFileLocation + System.getProperty("file.separator");
 		}
@@ -95,12 +95,11 @@ public class ApplicationProperties {
 	 * @throws IOException
 	 */
 	public void loadPropertiesFile(String configFileLocation, String configFileName) throws IOException{
-		InputStream inputStream = ap.getInputStream(configFileLocation, configFileName);
-		if (inputStream != null) {
-			getProperties().load(inputStream);
-		} else {
+		FileReader fileReader = new FileReader(new File(this.getClass().getClassLoader().getResource(configFileName).getPath()));
+		if (fileReader != null) {
+			getProperties().load(fileReader);
 		}
-		inputStream.close();
+		fileReader.close();
 	}
 	
 	/**
@@ -285,5 +284,8 @@ public class ApplicationProperties {
 		return prop;
 	}
 	
+	class GetJSON {
+		
+	}
 	
 }

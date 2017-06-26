@@ -3,10 +3,6 @@
 	<properties>
 		<property name="name">kineticskunk</property>
 		<property name="pattern">%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</property>
-
-
-		<!-- %d{yyyy-MM-dd HH:mm:ss.SSS} | %-5.5p | %-10.10t | %-20.70C:%-5.5L 
-			| %msg%n -->
 	</properties>
 	<appenders>
 		<Console name="Console" target="SYSTEM_OUT">

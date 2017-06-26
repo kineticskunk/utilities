@@ -16,8 +16,6 @@
 		<commons.beanutils.version>1.8.3</commons.beanutils.version>
 		<log4j.version>2.5</log4j.version>
 		<commons.lang3.version>3.4</commons.lang3.version>
-		<selenium.version>2.53.0</selenium.version>
-		<appium.version>2.2.0</appium.version>
 		<testng.version>6.9.10</testng.version>
 		<jsch.version>0.1.38</jsch.version>
 		<mongo.java.version>3.2.2</mongo.java.version>
@@ -288,6 +286,16 @@
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>1.10</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.json</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
 		</dependency>
 	</dependencies>
 </project>

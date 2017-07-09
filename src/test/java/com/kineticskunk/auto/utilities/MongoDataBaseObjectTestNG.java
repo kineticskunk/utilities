@@ -22,8 +22,13 @@ public class MongoDataBaseObjectTestNG extends ConfigurationLoader {
 	@BeforeClass
 	@Parameters( { "mongoDBHost", "mongoDBPort", "mongoDBName" } )
 	public void beforeClass(String mongoDBHost, String mongoDBPort, String mongoDBName) throws NumberFormatException, UnknownHostException {
-		mdbo = new MongoDataBaseObject(mongoDBHost, Integer.valueOf(mongoDBPort), mongoDBName);
+		mdbo = MongoDataBaseObject.getInstance(mongoDBHost, Integer.valueOf(mongoDBPort), mongoDBName);
 		mdbo.setMondoDBObject(this.getConfiguration());
+	}
+	
+	@Test (groups = "collections", priority = 0)
+	public void verfiyCollectionExists() {
+		Assert.assertTrue(mdbo.doesCollectionExist(mdbo.getMongoDB(), "clientportal"));
 	}
 	
 	@Test (groups = "collections", priority = 0)

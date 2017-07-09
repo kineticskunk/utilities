@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite" parallel="false">
+	
+	<listeners>
+		<listener class-name="org.testng.reporters.EmailableReporter2" />
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+	</listeners>
+	
+	<parameter name="jsonFile" value="mongodbobjecttest.json" />
+	<parameter name="mongoDBHost" value="localhost" />
+	<parameter name="mongoDBPort" value="27017" />
+	<parameter name="mongoDBName" value="mongoTestDB" />
+
+	<test name="Test">
+		<classes>
+			<class name="com.kineticskunk.auto.utilities.MongoDataBaseObjectTestNG" />
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->

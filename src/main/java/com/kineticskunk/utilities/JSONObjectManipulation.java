@@ -17,61 +17,52 @@ public class JSONObjectManipulation {
 
 	private final Logger logger = LogManager.getLogger(JSONObjectManipulation.class.getName());
 	private final Marker JSONREADER = MarkerManager.getMarker("JSONREADER");
-
+	
 	private JSONParser parser;
 	private JSONObject jsonFile;
 	private FileReader jsonReadFile;
-	private JSONObject nestedJSONObject;
+	private JSONObject json;
+	private String jsonFileName;
 	private String keyValue;
-	
-	private static JSONObjectManipulation jom;
 
-	public static JSONObjectManipulation getInstance() throws IOException {
-		if (jom == null ) {
-			synchronized (JSONObjectManipulation.class) {
-				if (jom == null) {
-					jom = new JSONObjectManipulation();
-				}
-			}
-		}
-		return jom;
-	}
 	
 	public JSONObjectManipulation() {
-		jom.parser = null;
-		jom.jsonFile = null;
-		jom.jsonReadFile = null;
-		jom.nestedJSONObject = null;
-		jom.keyValue = null;
+		this.json = null;
+		this.keyValue = null;
+	}
+	
+	public JSONObjectManipulation(JSONObject json) {
+		this();
+		this.json = json;
+	}
+	
+	public JSONObjectManipulation(JSONObject json, String jsonFileName) {
+		this(json);
+		this.json = json;
+		this.jsonFileName = jsonFileName;
 	}
 	
 	private JSONObjectManipulationBuilder jomb = new JSONObjectManipulationBuilder();
 	
 	public JSONObjectManipulation(JSONObjectManipulationBuilder jomb) {
-		jom.parser = jomb.parser;
-		jom.jsonFile = jomb.jsonFile;
-		jom.jsonReadFile = jomb.jsonReadFile;
-		jom.nestedJSONObject = jomb.nestedJSONObject;
-		jom.keyValue = jomb.keyValue;
+		this.keyValue = jomb.keyValue;
 	}
 
 	public JSONObjectManipulation(String jsonFileName) throws IOException, ParseException {
-		jom.jomb.setJSONReadFile(jsonFileName).parseJSON().build();
+		this.jomb.setJSONReadFile(jsonFileName).parseJSON().build();
 	}
 	
-	public String getJSONKeyValue(String[] keys) {
-		for (int i = 0; i <= (keys.length - 1); i++) {
-			if (i == 0) {
-				jom.jomb.setJSONObject(jom.jomb.jsonFile, keys[0]).build();
-			} else if (i > 1 && i < (keys.length - 1)) {
-				jom.jomb.setJSONObject(jom.jomb.nestedJSONObject, keys[i]).build();
-			} else if (i == (keys.length - 1)) {
-				jom.jomb.getJSONKeyValue(keys[i]).build();
-			}
+	public void setJSONReadFile(String jsonFileName) {
+		try {
+			this.jsonReadFile = new FileReader(new File(this.getClass().getClassLoader().getResource(jsonFileName).getPath()));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return jom.keyValue;
+		
 	}
-
+	
+	
 	
 	private class JSONObjectManipulationBuilder {
 		
@@ -101,7 +92,7 @@ public class JSONObjectManipulation {
 		
 		private JSONObjectManipulationBuilder parseJSON() {
 			try {
-				this.jsonFile = (JSONObject) jom.parser.parse(this.jsonReadFile);
+				this.jsonFile = (JSONObject) this.parser.parse(this.jsonReadFile);
 			} catch (IOException | ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -128,6 +119,20 @@ public class JSONObjectManipulation {
 				//this.logger.error(JSONREADER, "JSONObject " + (char)34 + jsonObject.toJSONString() + (char)34 + " object doesn't contain key " + (char)34 + key + (char)34);
 			}
 			return false;
+		}
+		
+		public JSONObjectManipulationBuilder getJSONKeyValue(String[] keys) {
+			for (int i = 0; i <= (keys.length - 1); i++) {
+				if (i == 0) {
+					this.setJSONObject(this.jsonFile, keys[0]).build();
+				} else if (i > 1 && i < (keys.length - 1)) {
+					this.setJSONObject(this.nestedJSONObject, keys[i]).build();
+				} else if (i == (keys.length - 1)) {
+					this.getJSONKeyValue(keys[i]).build();
+				}
+			}
+			
+			return this;
 		}
 		
 		private JSONObjectManipulation build() {

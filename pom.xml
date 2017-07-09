@@ -18,7 +18,7 @@
 		<commons.lang3.version>3.4</commons.lang3.version>
 		<testng.version>6.9.10</testng.version>
 		<jsch.version>0.1.38</jsch.version>
-		<mongo.java.version>3.2.2</mongo.java.version>
+		<mongo.java.version>2.10.1</mongo.java.version>
 		<github.global.server>github</github.global.server>
 		<github.repo.name>maven-dependencies</github.repo.name>
 		<mvn.repo.branch>mvn-repo</mvn.repo.branch>
@@ -248,6 +248,12 @@
 			<artifactId>guava</artifactId>
 			<version>${google.guava.version}</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>3.0</version>
+		</dependency>
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
@@ -270,6 +276,18 @@
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<version>${testng.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.uncommons</groupId>
+			<artifactId>reportng</artifactId>
+			<version>1.1.4</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.testng</groupId>
+					<artifactId>testng</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.jcraft</groupId>

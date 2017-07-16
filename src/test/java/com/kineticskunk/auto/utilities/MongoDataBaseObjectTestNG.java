@@ -16,7 +16,7 @@ public class MongoDataBaseObjectTestNG extends ConfigurationLoader {
 
 	@Parameters( { "jsonFile" } )
 	public MongoDataBaseObjectTestNG(String jsonFile) {
-		super(jsonFile);
+		this.loadConfigurationFile(jsonFile);
 	}
 	
 	@BeforeClass

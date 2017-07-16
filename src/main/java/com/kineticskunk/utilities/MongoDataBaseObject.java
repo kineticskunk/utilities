@@ -83,7 +83,6 @@ public class MongoDataBaseObject {
 		} catch (Exception e) {
 			return null;
 		}
-		
 	}
 	
 	public boolean doesCollectionExist(DB db, String collectionName) {

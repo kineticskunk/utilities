@@ -24,11 +24,10 @@ public class ConfigurationLoader {
 	private JSONParser parser = new JSONParser();
 	private JSONObject jsonObject = null;
 	
-	public ConfigurationLoader(String jsonFile) {
-		this.setJSONObject(jsonFile);
+	public ConfigurationLoader() {
 	}
 	
-	public void setJSONObject(String jsonFile) {
+	public void loadConfigurationFile(String jsonFile) {
 		try {
 			this.jsonObject = (JSONObject) this.parser.parse(new FileReader(new File(this.getClass().getClassLoader().getResource(jsonFile).getPath())));
 		} catch (FileNotFoundException e) {

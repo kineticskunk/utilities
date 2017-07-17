@@ -8,6 +8,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.kineticskunk.utilities.ConfigurationLoader;
+import com.kineticskunk.utilities.Converter;
 import com.kineticskunk.utilities.MongoDataBaseObject;
 
 public class MongoDataBaseObjectTestNG extends ConfigurationLoader {
@@ -20,9 +21,14 @@ public class MongoDataBaseObjectTestNG extends ConfigurationLoader {
 	}
 	
 	@BeforeClass
-	@Parameters( { "mongoDBHost", "mongoDBPort", "mongoDBName" } )
-	public void beforeClass(String mongoDBHost, String mongoDBPort, String mongoDBName) throws NumberFormatException, UnknownHostException {
-		mdbo = MongoDataBaseObject.getInstance(mongoDBHost, Integer.valueOf(mongoDBPort), mongoDBName);
+	@Parameters( { "mongoHost", "mongoPort", "mongoDB" } )
+	public void beforeClass(String mongoHost, String mongoPort, String mongoDB) throws NumberFormatException, UnknownHostException {
+		mdbo = MongoDataBaseObject.getInstance();
+		mdbo.setMongoHost(mongoHost);
+		mdbo.setMongoPort(Converter.toInteger(mongoPort));
+		mdbo.setMongoDB(mongoDB);
+		mdbo.setMongoClient();
+		mdbo.setMongoDBObject();
 		mdbo.setMondoDBObject(this.getConfiguration());
 	}
 	

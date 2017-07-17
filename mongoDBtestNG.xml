@@ -9,9 +9,9 @@
 	</listeners>
 	
 	<parameter name="jsonFile" value="mongodbobjecttest.json" />
-	<parameter name="mongoDBHost" value="localhost" />
-	<parameter name="mongoDBPort" value="27017" />
-	<parameter name="mongoDBName" value="mongoTestDB" />
+	<parameter name="mongoHost" value="localhost" />
+	<parameter name="mongoPort" value="27017" />
+	<parameter name="mongoDB" value="mongoTestDB" />
 
 	<test name="Test">
 		<classes>

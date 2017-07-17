@@ -22,6 +22,10 @@ public class MongoDataBaseObject {
 	private final Logger logger = LogManager.getLogger(MongoDataBaseObject.class.getName());
 	private final Marker MONGODBOBJECT = MarkerManager.getMarker("MONGODBOBJECT");
 	
+	private String mongoHost;
+	private int mongoPort;
+	private String mongoDB;
+	
 	private MongoClient mongo;
 	private DB db;
 	private DBCollection collection;
@@ -33,20 +37,56 @@ public class MongoDataBaseObject {
 	 * Singleton Constructor
 	 * @throws UnknownHostException 
 	 */
-	public static MongoDataBaseObject getInstance(String mongoDBServer, int port, String dbName) throws UnknownHostException {
+	public static MongoDataBaseObject getInstance() throws UnknownHostException {
 		if (mgbo == null ) {
 			synchronized (MongoDataBaseObject.class) {
 				if (mgbo == null) {
-					mgbo = new MongoDataBaseObject(mongoDBServer, port, dbName);
+					mgbo = new MongoDataBaseObject();
 				}
 			}
 		}
 		return mgbo;
 	}
 	
-	public MongoDataBaseObject(String mongoDBServer, int port, String dbName) throws UnknownHostException {
-		this.mongo = new MongoClient(mongoDBServer, port);
-		this.db = mongo.getDB(dbName);
+	public MongoDataBaseObject() throws UnknownHostException {
+		this.mongoHost = null;
+		this.mongoPort = 0;
+		this.mongoDB = null;
+	}
+	
+	public MongoDataBaseObject(String mongoHost, int port) throws UnknownHostException {
+		this();
+		this.mongo = new MongoClient(mongoHost, port);
+	}
+	
+	public MongoDataBaseObject(String mongoHost, int mongoPort, String mongoDB) throws UnknownHostException {
+		this(mongoHost, mongoPort);
+		this.db = mongo.getDB(mongoDB);
+	}
+	
+	public void setMongoHost(String mongoHost) {
+		this.mongoHost = mongoHost;
+	}
+	
+	public void setMongoPort(int mongoPort) {
+		this.mongoPort = mongoPort;
+	}
+	
+	public void setMongoDB(String mongoDB) {
+		this.mongoDB = mongoDB;
+	}
+	
+	public void setMongoClient() {
+		try {
+			this.mongo = new MongoClient(this.mongoHost, this.mongoPort);
+		} catch (UnknownHostException e) {
+			this.mongo = null;
+			e.printStackTrace();
+		}
+	}
+	
+	public void setMongoDBObject() {
+		this.db = mongo.getDB(this.mongoDB);
 	}
 	
 	public DB getMongoDB() {

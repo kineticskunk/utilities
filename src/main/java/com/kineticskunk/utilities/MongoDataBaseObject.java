@@ -31,6 +31,8 @@ public class MongoDataBaseObject {
 	private DBCollection collection;
 	private DBObject dbObject;
 	
+	private String collectionName;
+	
 	private static MongoDataBaseObject mgbo;
 	
 	/**
@@ -52,6 +54,10 @@ public class MongoDataBaseObject {
 		this.mongoHost = null;
 		this.mongoPort = 0;
 		this.mongoDB = null;
+		this.db = null;
+		this.collection = null;
+		this.dbObject = null;
+		this.collectionName = null;
 	}
 	
 	public MongoDataBaseObject(String mongoHost, int port) throws UnknownHostException {
@@ -130,12 +136,27 @@ public class MongoDataBaseObject {
 		return (table.count()>0)?true:false;
 	}
 	
-	public DBCollection getCollection(String collectionName) {
-		if (doesCollectionExist(this.db, collectionName)) {
-			return this.db.getCollection(collectionName);
+	public void setCollection(String collectionName) {
+		this.collectionName = collectionName;
+	}
+	
+	public DBCollection getCollection() {
+		if (doesCollectionExist(this.db, this.collectionName)) {
+			return this.db.getCollection(this.collectionName);
 	    }
 		this.logger.warn(MONGODBOBJECT, String.format("Collection %s does not exist.", (char)34 + collectionName + (char)34));
 		return null;
+	}
+	
+	public String getFieldValue(String key) {
+		DBCursor cursor = null;
+		BasicDBObject query = new BasicDBObject();
+		String value = null;
+		cursor = this.getCollection().find(query);
+		while (cursor.hasNext()) {
+			value = cursor.next().get(key).toString();
+		}
+		return value;
 	}
 	
 	public String getFieldValue(String collection, String key) {
@@ -153,6 +174,11 @@ public class MongoDataBaseObject {
 	
 	public DBObject getMondoDBObject() {
 		return this.dbObject;
+	}
+	
+	public void startMongoDB(String dbPath) {
+		CommandLineInteractor cli = new CommandLineInteractor();
+		cli.executeRuntimeCommand("mongodb --dbpath " + dbPath, true);
 	}
 	
 }

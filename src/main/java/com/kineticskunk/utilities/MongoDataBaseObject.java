@@ -1,5 +1,8 @@
 package com.kineticskunk.utilities;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -174,6 +177,40 @@ public class MongoDataBaseObject {
 	
 	public DBObject getMondoDBObject() {
 		return this.dbObject;
+	}
+	
+	public void insertValueIntoColletion(String collection, String key, String value) {
+		BasicDBObject dbObj = new BasicDBObject();
+		dbObj.put(key, value);
+		this.setCollection(collection);
+		this.getCollection().insert(dbObj);
+	}
+	
+	/**
+	 * 
+	 * @param mongoTable
+	 * @param tableFile
+	 */
+	public void writeFileToMongoDBTable(BasicDBObject mongoTable, String tableFile) {
+		String  thisLine = null;
+		BufferedReader br;
+		try {
+			br = new BufferedReader(new FileReader(tableFile));
+			try{
+				while ((thisLine = br.readLine()) != null) {
+					String[] array = thisLine.split(",");
+					mongoTable.put(array[0].toString(), array[1].toString().replaceAll("\"", ""));
+					collection.save(mongoTable);
+				}
+				br.close();
+
+			}catch(Exception e){
+				logger.fatal("File not found exception occured");
+			}
+
+		} catch (FileNotFoundException fnfe) {
+			logger.fatal("File not found exception occured");
+		}
 	}
 	
 	public void startMongoDB(String dbPath) {
